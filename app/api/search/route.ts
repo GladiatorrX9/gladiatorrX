@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import type { LeakOSINTRequest, LeakOSINTResponse } from "@/types/api";
 
 const API_URL = "https://leakosintapi.com/";
-const API_TOKEN = process.env.LEAKOSINT_API_TOKEN || "1388845031:9sliWRXS";
+const API_TOKEN = process.env.LEAKOSINT_API_TOKEN;
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,6 +12,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: "Invalid query parameter" },
         { status: 400 }
+      );
+    }
+
+    if (!API_TOKEN) {
+      return NextResponse.json(
+        { error: "API token not configured" },
+        { status: 500 }
       );
     }
 
